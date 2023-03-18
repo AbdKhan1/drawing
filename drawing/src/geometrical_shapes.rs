@@ -115,7 +115,10 @@ impl Drawable for Point {
 // Line //
 impl Line {
     pub fn new(point_a: &Point, point_b: &Point) -> Self {
-        Self { point_a: *point_a, point_b:*point_b }
+        Self {
+            point_a: *point_a,
+            point_b: *point_b,
+        }
     }
 
     pub fn random(x: i32, y: i32) -> Self {
@@ -151,7 +154,10 @@ impl Drawable for Line {
 // Circle //
 impl Circle {
     pub fn new(point: &Point, radius: i32) -> Self {
-        Self { point: *point, radius }
+        Self {
+            point: *point,
+            radius,
+        }
     }
     pub fn random(width: i32, height: i32) -> Self {
         let mut rng_x = rand::thread_rng().gen_range(0..width);
@@ -170,12 +176,12 @@ impl Drawable for Circle {
         let y0 = self.point.y;
         let colour = Circle::color();
         let pi = std::f64::consts::PI;
-        let mut i:f64 = 0.;
+        let mut i: f64 = 0.;
         loop {
             let angle = i;
             let x: i32 = (self.radius as f64 * (angle * pi / 180.).cos()) as i32;
             let y: i32 = (self.radius as f64 * (angle * pi / 180.).sin()) as i32;
-            image.set_pixel(x0+x,y0+ y, colour.clone());
+            image.set_pixel(x0 + x, y0 + y, colour.clone());
             i += 0.1;
             if i > 360. {
                 break;
@@ -224,25 +230,34 @@ impl Drawable for Triangle {
 // Rectangle //
 impl Rectangle {
     pub fn new(point_a: &Point, point_b: &Point) -> Self {
-        Self { point_a:*point_a, point_b:*point_b }
+        Self {
+            point_a: *point_a,
+            point_b: *point_b,
+        }
     }
 }
 
 impl Drawable for Rectangle {
     fn draw(&self, image: &mut Image) {
-        let point_ab = Point {
-            x: self.point_a.x,
-            y: self.point_b.y,
-        };
-        let point_ba = Point {
-            x: self.point_b.x,
-            y: self.point_a.y,
-        };
+        let x0 = self.point_a.x;
+        let mut x1 = self.point_b.x;
+        let mut y0 = self.point_a.x;
+        let y1 = self.point_b.y;
+
+        let is_sqaure = (x1 - x0) == (y1 - y0);
+        if is_sqaure {
+            // x1 = x1*2;
+            y0 = y0 * 2;
+        }
+        let point_a = Point { x: x0, y: y0 };
+        let point_b = Point { x: x1, y: y1 };
+        let point_ab = Point { x: x0, y: y1 };
+        let point_ba = Point { x: x1, y: y0 };
         let colour = Rectangle::color();
-        draw_line(image, &self.point_a, &point_ab, &colour);
-        draw_line(image, &point_ab, &self.point_b, &colour);
-        draw_line(image, &self.point_b, &point_ba, &colour);
-        draw_line(image, &point_ba, &self.point_a, &colour);
+        draw_line(image, &point_a, &point_ab, &colour);
+        draw_line(image, &point_ab, &point_b, &colour);
+        draw_line(image, &point_b, &point_ba, &colour);
+        draw_line(image, &point_ba, &point_a, &colour);
     }
     fn color() -> Color {
         Color {

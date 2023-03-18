@@ -1,0 +1,5 @@
+*!/src/*
+!/Cargo.toml
+**/target/*
+**/Cargo.lock
+/image.png

@@ -43,7 +43,7 @@ pub struct Circle {
 
 use rand::prelude::*;
 
-fn draw_line(image: &mut Image, a: &Point, b: &Point) {
+fn draw_line(image: &mut Image, a: &Point, b: &Point, colour: &Color) {
     let mut x0 = a.x;
     let mut y0 = a.y;
     let x1 = b.x;
@@ -62,13 +62,7 @@ fn draw_line(image: &mut Image, a: &Point, b: &Point) {
     let mut err2;
     loop {
         // Set pixel
-        let colour = Color {
-            r: rand::thread_rng().gen_range(0..=255),
-            g: rand::thread_rng().gen_range(0..=255),
-            b: rand::thread_rng().gen_range(0..=255),
-            a: 255,
-        };
-        image.set_pixel(x0, y0 , colour);
+        image.set_pixel(x0, y0, colour.clone());
 
         // Check end condition
         if x0 == x1 && y0 == y1 {
@@ -95,30 +89,22 @@ impl Point {
         Self { x, y }
     }
     pub fn random(x: i32, y: i32) -> Self {
-        let mut rng_x = rand::thread_rng().gen_range(0..x);
-        let mut rng_y = rand::thread_rng().gen_range(0..y);
+        let rng_x = rand::thread_rng().gen_range(0..x);
+        let rng_y = rand::thread_rng().gen_range(0..y);
         Self { x: rng_x, y: rng_y }
     }
 }
 impl Drawable for Point {
     fn draw(&self, image: &mut Image) {
-        fn color() -> Color {
-            Color {
-                r: rand::thread_rng().gen_range(0..=255),
-                g: rand::thread_rng().gen_range(0..=255),
-                b: rand::thread_rng().gen_range(0..=255),
-                a: 255,
-            }
-        }
         // Set pixel
-        let colour = color();
+        let colour = Point::color();
         image.set_pixel(self.x, self.y, colour);
     }
     fn color() -> Color {
         Color {
-            r: rand::thread_rng().gen_range(0..=255),
-            g: rand::thread_rng().gen_range(0..=255),
-            b: rand::thread_rng().gen_range(0..=255),
+            r: 255,
+            g: 255,
+            b: 255,
             a: 255,
         }
     }
@@ -128,7 +114,7 @@ impl Drawable for Point {
 // Line //
 impl Line {
     pub fn new(point_a: Point, point_b: Point) -> Self {
-        Self { point_a,point_b }
+        Self { point_a, point_b }
     }
 
     pub fn random(x: i32, y: i32) -> Self {
@@ -147,13 +133,14 @@ impl Line {
 }
 impl Drawable for Line {
     fn draw(&self, image: &mut Image) {
-        draw_line(image, &self.point_a, &self.point_b)
+        let colour = Line::color();
+        draw_line(image, &self.point_a, &self.point_b, &colour);
     }
     fn color() -> Color {
         Color {
-            r: rand::thread_rng().gen_range(0..=255),
-            g: rand::thread_rng().gen_range(0..=255),
-            b: rand::thread_rng().gen_range(0..=255),
+            r: 255,
+            g: 255,
+            b: 255,
             a: 255,
         }
     }
@@ -177,18 +164,11 @@ impl Circle {
     }
 }
 impl Drawable for Circle {
-    fn draw(&self,image: &mut Image) {
+    fn draw(&self, image: &mut Image) {
         let x0 = self.point.x;
         let y0 = self.point.y;
-        fn color() -> Color {
-            Color {
-                r: rand::thread_rng().gen_range(0..=255),
-                g: rand::thread_rng().gen_range(0..=255),
-                b: rand::thread_rng().gen_range(0..=255),
-                a: 255,
-            }
-        }
-        image.set_pixel(x0, y0, color());
+        let colour = Circle::color();
+        // image.set_pixel(x0, y0, colour);
         //     let y1 = Self.point_b.x;
         //     let y2 = Self.point_b.y;
 
@@ -239,15 +219,16 @@ impl Triangle {
 }
 impl Drawable for Triangle {
     fn draw(&self, image: &mut Image) {
-        draw_line(image, &self.point_a, &self.point_b);
-        draw_line(image, &self.point_b, &self.point_c);
-        draw_line(image, &self.point_c, &self.point_a);
+        let colour = Triangle::color();
+        draw_line(image, &self.point_a, &self.point_b, &colour);
+        draw_line(image, &self.point_b, &self.point_c, &colour);
+        draw_line(image, &self.point_c, &self.point_a, &colour);
     }
     fn color() -> Color {
         Color {
-            r: rand::thread_rng().gen_range(0..=255),
-            g: rand::thread_rng().gen_range(0..=255),
-            b: rand::thread_rng().gen_range(0..=255),
+            r: 255,
+            g: 255,
+            b: 255,
             a: 255,
         }
     }
@@ -271,16 +252,17 @@ impl Drawable for Rectangle {
             x: self.point_b.x,
             y: self.point_a.y,
         };
-        draw_line(image, &self.point_a, &point_ab);
-        draw_line(image, &point_ab, &self.point_b);
-        draw_line(image, &self.point_b, &point_ba);
-        draw_line(image, &point_ba, &self.point_a);
+        let colour = Rectangle::color();
+        draw_line(image, &self.point_a, &point_ab, &colour);
+        draw_line(image, &point_ab, &self.point_b, &colour);
+        draw_line(image, &self.point_b, &point_ba, &colour);
+        draw_line(image, &point_ba, &self.point_a, &colour);
     }
     fn color() -> Color {
         Color {
-            r: rand::thread_rng().gen_range(0..=255),
-            g: rand::thread_rng().gen_range(0..=255),
-            b: rand::thread_rng().gen_range(0..=255),
+            r: 255,
+            g: 255,
+            b: 255,
             a: 255,
         }
     }

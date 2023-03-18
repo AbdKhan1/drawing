@@ -12,6 +12,7 @@ pub trait Displayable {
 }
 
 // Point: a new point should be created from two i32 values.
+#[derive(Clone, Copy)]
 pub struct Point {
     pub x: i32,
     pub y: i32,
@@ -113,8 +114,8 @@ impl Drawable for Point {
 
 // Line //
 impl Line {
-    pub fn new(point_a: Point, point_b: Point) -> Self {
-        Self { point_a, point_b }
+    pub fn new(point_a: &Point, point_b: &Point) -> Self {
+        Self { point_a: *point_a, point_b:*point_b }
     }
 
     pub fn random(x: i32, y: i32) -> Self {
@@ -149,8 +150,8 @@ impl Drawable for Line {
 
 // Circle //
 impl Circle {
-    pub fn new(point: Point, radius: i32) -> Self {
-        Self { point, radius }
+    pub fn new(point: &Point, radius: i32) -> Self {
+        Self { point: *point, radius }
     }
     pub fn random(width: i32, height: i32) -> Self {
         let mut rng_x = rand::thread_rng().gen_range(0..width);
@@ -168,33 +169,18 @@ impl Drawable for Circle {
         let x0 = self.point.x;
         let y0 = self.point.y;
         let colour = Circle::color();
-        // image.set_pixel(x0, y0, colour);
-        //     let y1 = Self.point_b.x;
-        //     let y2 = Self.point_b.y;
-
-        // // Get absolute x/y offset
-        // let dx = if x0 > x1 { x0 - x1 } else { x1 - x0 };
-        // let dy = if y0 > y1 { y0 - y1 } else { y1 - y0 };
-
-        // // Get slopes
-        // let sx = if x0 < x1 { 1 } else { -1 };
-        // let sy = if y0 < y1 { 1 } else { -1 };
-
-        // // Initialize error
-        // let mut err = if dx > dy { dx } else {-dy} / 2;
-        // let mut err2;
-        //     loop {
-        //         // Set pixel
-
-        // // Check end condition
-        // if x0 == x1 && y0 == y1 { break };
-
-        // // Store old error
-        // err2 = 2 * err;
-
-        // // Adjust error and start position
-        // if err2 > -dx { err -= dy; x0 += sx; }
-        // if err2 < dy { err += dx; y0 += sy; }
+        let pi = std::f64::consts::PI;
+        let mut i:f64 = 0.;
+        loop {
+            let angle = i;
+            let x: i32 = (self.radius as f64 * (angle * pi / 180.).cos()) as i32;
+            let y: i32 = (self.radius as f64 * (angle * pi / 180.).sin()) as i32;
+            image.set_pixel(x0+x,y0+ y, colour.clone());
+            i += 0.1;
+            if i > 360. {
+                break;
+            }
+        }
     }
     fn color() -> Color {
         Color {
@@ -209,11 +195,11 @@ impl Drawable for Circle {
 
 // Triangle //
 impl Triangle {
-    pub fn new(point_a: Point, point_b: Point, point_c: Point) -> Self {
+    pub fn new(point_a: &Point, point_b: &Point, point_c: &Point) -> Self {
         Self {
-            point_a,
-            point_b,
-            point_c,
+            point_a: *point_a,
+            point_b: *point_b,
+            point_c: *point_c,
         }
     }
 }
@@ -237,8 +223,8 @@ impl Drawable for Triangle {
 
 // Rectangle //
 impl Rectangle {
-    pub fn new(point_a: Point, point_b: Point) -> Self {
-        Self { point_a, point_b }
+    pub fn new(point_a: &Point, point_b: &Point) -> Self {
+        Self { point_a:*point_a, point_b:*point_b }
     }
 }
 

@@ -244,19 +244,22 @@ impl Drawable for Rectangle {
         let mut y0 = self.point_a.x;
         let mut y1 = self.point_b.y;
 
-        let is_sqaure = (x1 - x0) == (y1 - y0);
-        if is_sqaure{
-            // x1 = x1*2;
-            if y0 != 0{
-                y0 = y0 * 2;
-            }else if y1 > 0{
-                y1 = y1*2;
-            }else if x1 != 0{
-                x1 = x1*2;
-            }else{
-                x0 = x0 * 2;
-            }
-        }
+         
+        // check if it's a square and changes either length or side to make it look like a rectangle we
+        // are all familiar with. However, a square is a special kind of rectangle.
+        // let is_sqaure = (x1 - x0) == (y1 - y0);
+        // if is_sqaure{
+        //     // x1 = x1*2;
+        //     if y0 != 0{
+        //         y0 = y0 * 2;
+        //     }else if y1 > 0{
+        //         y1 = y1*2;
+        //     }else if x1 != 0{
+        //         x1 = x1*2;
+        //     }else{
+        //         x0 = x0 * 2;
+        //     }
+        // }
         let point_a = Point { x: x0, y: y0 };
         let point_b = Point { x: x1, y: y1 };
         let point_ab = Point { x: x0, y: y1 };

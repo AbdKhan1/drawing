@@ -103,9 +103,9 @@ impl Drawable for Point {
     }
     fn color() -> Color {
         Color {
-            r: 255,
-            g: 255,
-            b: 255,
+            r: rand::thread_rng().gen_range(0..=255),
+            g: rand::thread_rng().gen_range(0..=255),
+            b: rand::thread_rng().gen_range(0..=255),
             a: 255,
         }
     }
@@ -142,9 +142,9 @@ impl Drawable for Line {
     }
     fn color() -> Color {
         Color {
-            r: 255,
-            g: 255,
-            b: 255,
+            r: rand::thread_rng().gen_range(0..=255),
+            g: rand::thread_rng().gen_range(0..=255),
+            b: rand::thread_rng().gen_range(0..=255),
             a: 255,
         }
     }
@@ -218,9 +218,9 @@ impl Drawable for Triangle {
     }
     fn color() -> Color {
         Color {
-            r: 255,
-            g: 255,
-            b: 255,
+            r: rand::thread_rng().gen_range(0..=255),
+            g: rand::thread_rng().gen_range(0..=255),
+            b: rand::thread_rng().gen_range(0..=255),
             a: 255,
         }
     }
@@ -272,9 +272,9 @@ impl Drawable for Rectangle {
     }
     fn color() -> Color {
         Color {
-            r: 255,
-            g: 255,
-            b: 255,
+            r: rand::thread_rng().gen_range(0..=255),
+            g: rand::thread_rng().gen_range(0..=255),
+            b: rand::thread_rng().gen_range(0..=255),
             a: 255,
         }
     }
